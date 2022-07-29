@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>SESI5-CuyUniversity</title>
+  </head>
+  <body>
+    <!-- CONTENT -->
+    <div id="root">
+      <!-- component -->
+      <div
+        class="h-screen bg-gradient-to-br from-blue-600 to-indigo-600 flex justify-center items-center w-full drop-shadow-2xl"
+      >
+        <form>
+          <div
+            class="bg-white px-10 py-8 rounded-xl w-screen shadow-md max-w-sm"
+          >
+            <div class="space-y-4">
+              <h1 class="text-center text-2xl font-semibold text-gray-600">
+                Register
+              </h1>
+              <div>
+                <label
+                  for="username"
+                  class="block mb-1 text-gray-600 font-semibold"
+                  >Username</label
+                >
+                <input
+                  type="text"
+                  class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full"
+                  id="username"
+                />
+              </div>
+              <div>
+                <label
+                  for="password"
+                  class="block mb-1 text-gray-600 font-semibold"
+                  >Password</label
+                >
+                <input
+                  type="text"
+                  class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full"
+                  id="password"
+                />
+              </div>
+            </div>
+            <button
+              class="mt-4 w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-indigo-100 py-2 rounded-md text-lg tracking-wide"
+              onclick="register()"
+            >
+              Register
+            </button>
+            <button
+              class="mt-4 w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-indigo-100 py-2 rounded-md text-lg tracking-wide"
+              onclick="onLogin()"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script type="application/javascript">
+    let username = document.getElementById("username");
+    let password = document.getElementById("password");
+    let loginButton = document.getElementById("loginButton");
+    let logOUtButton = document.getElementById("logOUtButton");
+    let admin = document.getElementById("admin");
+    let normal = document.getElementById("normal");
+
+    admin.style.display = "none";
+    normal.style.display = "none";
+    logOUtButton.style.display = "none";
+
+    function onLogin() {
+      console.log("Logged!");
+      console.log("username: " + username.value);
+      console.log("password: " + password.value);
+      logOUtButton.style.display = "block";
+      localStorage.setItem("username", username.value);
+
+      if (username.value == "admin" && password.value == "admin") {
+        console.log("Admin logged in!");
+        localStorage.setItem("isAdmin", true);
+        admin.style.display = "block";
+        normal.style.display = "none";
+        username.style.display = "none";
+        password.style.display = "none";
+        loginButton.style.display = "none";
+      } else {
+        console.log("user login biasa");
+        localStorage.setItem("isAdmin", false);
+        normal.style.display = "block";
+        admin.style.display = "none";
+        username.style.display = "none";
+        password.style.display = "none";
+        loginButton.style.display = "none";
+      }
+    }
+
+    function onLogout() {
+      console.log("Logged out!");
+      localStorage.clear();
+      location.reload();
+      admin.style.display = "none";
+      normal.style.display = "none";
+      username.style.display = "block";
+      password.style.display = "block";
+      loginButton.style.display = "block";
+    }
+
+    if (localStorage.getItem("username")) {
+      if (localStorage.getItem("isAdmin")) {
+        admin.style.display = "block";
+        normal.style.display = "none";
+      } else {
+        normal.style.display = "block";
+        admin.style.display = "none";
+      }
+    }
+  </script>
+  <style>
+    .cascading-right {
+      margin-right: -50px;
+    }
+
+    @media (max-width: 991.98px) {
+      .cascading-right {
+        margin-right: 0;
+      }
+    }
+  </style>
+</html>
