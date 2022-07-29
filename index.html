@@ -4,130 +4,82 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/daisyui@2.20.0/dist/full.css"
-      rel="stylesheet"
-      type="text/css"
-    />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>SESI5-CuyUniversity</title>
   </head>
   <body>
     <!-- CONTENT -->
     <div id="root">
-      <!-- component -->
-      <div
-        class="h-screen bg-gradient-to-br from-blue-600 to-indigo-600 flex justify-center items-center w-full drop-shadow-2xl"
-      >
-        <form>
-          <div
-            class="bg-white px-10 py-8 rounded-xl w-screen shadow-md max-w-sm"
-          >
-            <div class="space-y-4">
-              <h1 class="text-center text-2xl font-semibold text-gray-600">
-                Register
-              </h1>
-              <div id="wrongPass">
-                <div class="alert alert-error shadow-lg">
-                  <div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="stroke-current flex-shrink-0 h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <span>Oops! Something wrong with your password or username</span>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <label
-                  for="username"
-                  class="block mb-1 text-gray-600 font-semibold"
-                  >Username</label
-                >
-                <input
-                  type="text"
-                  class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full"
-                  id="username"
-                />
-              </div>
-              <div>
-                <label
-                  for="password"
-                  class="block mb-1 text-gray-600 font-semibold"
-                  >Password</label
-                >
-                <input
-                  type="text"
-                  class="bg-indigo-50 px-4 py-2 outline-none rounded-md w-full"
-                  id="password"
-                />
-              </div>
-            </div>
-            <button
-              class="mt-4 w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-indigo-100 py-2 rounded-md text-lg tracking-wide"
-              onclick="register()"
-            >
-              Register
-            </button>
-            <button
-              class="mt-4 w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-indigo-100 py-2 rounded-md text-lg tracking-wide"
-              onclick="onLogin()"
-            >
-              Login
-            </button>
-          </div>
-        </form>
-      </div>
+      <input type="text" placeholder="username" id="usernameInput" />
+      <input type="password" placeholder="password" id="passwordInput" />
+      <button onclick="onLogin()" id="loginButton">LOGIN</button>
+      <button onclick="onLogout()" id="logoutButton" style="display: none">
+        LOGOUT
+      </button>
+      <br />
+      <h1 id="admin" style="display: none">LOGIN SEBAGAI ADMIN</h1>
+      <h1 id="basic" style="display: none">LOGIN SEBAGAI USER BIASA</h1>
     </div>
   </body>
   <script type="application/javascript">
-    let username = document.getElementById("username");
-    let password = document.getElementById("password");
-    let wrongPass = document.getElementById("wrongPass");
-    wrongPass.style.display = "none";
+    let usernameInput = document.getElementById("usernameInput");
+    let passwordInput = document.getElementById("passwordInput");
+    let loginButton = document.getElementById("loginButton");
+    let logoutButton = document.getElementById("logoutButton");
+    let admin = document.getElementById("admin");
+    let basic = document.getElementById("basic");
 
-    function register() {
-      if (username.value == "" || password.value == "") {
-        alert("Please fill all the fields");
+    admin.style.display = "none";
+    basic.style.display = "none";
+    logoutButton.style.display = "none";
+
+    function onLogin() {
+      localStorage.setItem("username", usernameInput.value);
+      logoutButton.style.display = "block";
+      if (usernameInput.value == "admin" && passwordInput.value == "admin123") {
+        localStorage.setItem("role", "admin");
+        usernameInput.style.display = "none";
+        passwordInput.style.display = "none";
+        loginButton.style.display = "none";
+        basic.style.display = "none";
+        admin.style.display = "block";
+        location.href = "user/admin.html"
       } else {
-        localStorage.setItem("username", username.value);
-        localStorage.setItem("password", password.value);
+        usernameInput.style.display = "none";
+        passwordInput.style.display = "none";
+        loginButton.style.display = "none";
+        localStorage.setItem("role", "basic");
+        admin.style.display = "none";
+        basic.style.display = "block";
       }
     }
 
-    function onLogin() {
-      if (
-        username.value == localStorage.getItem("username") &&
-        password.value == localStorage.getItem("password")
-      ) {
-        console.log("Worked!");
+    if (localStorage.getItem("username")) {
+      usernameInput.style.display = "none";
+      passwordInput.style.display = "none";
+      loginButton.style.display = "none";
+      logoutButton.style.display = "block";
+      if (localStorage.getItem("role") == "admin") {
+        basic.style.display = "none";
+        admin.style.display = "block";
       } else {
-        wrongPass.style.display = "block";
+        admin.style.display = "none";
+        basic.style.display = "block";
       }
-      if ((username.value = "admin" && password.value == "admin")) {
-        window.location.href = "/user/admin.html";
-      } else {
-      }
+    }
+
+    function onLogout() {
+      localStorage.clear();
+      location.reload();
     }
   </script>
   <style>
-    .cascading-right {
-      margin-right: -50px;
-    }
-
-    @media (max-width: 991.98px) {
-      .cascading-right {
-        margin-right: 0;
-      }
+    #root {
+      background-color: tomato;
+      color: black;
+      font-size: 2em;
+      text-align: center;
+      height: 100vh;
     }
   </style>
 </html>
